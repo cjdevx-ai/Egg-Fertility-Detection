@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OvoScan AI | Next-Gen Avian Intelligence</title>
+    
+    <!-- Fonts from Fontshare -->
+    <link href="https://api.fontshare.com/v2/css?f[]=clash-grotesk@400,500,600,700&f[]=satoshi@400,500,700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind PlayCDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Iconify -->
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navy: {
+                            800: '#1e293b',
+                            900: '#0f172a',
+                            950: '#020617',
+                        },
+                        cyan: {
+                            400: '#22d3ee',
+                            500: '#06b6d4',
+                            600: '#0891b2',
+                            900: '#164e63',
+                        },
+                        purple: {
+                            500: '#a855f7',
+                            900: '#581c87',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Satoshi', 'sans-serif'],
+                        display: ['Clash Grotesk', 'sans-serif'],
+                    },
+                    backdropBlur: {
+                        '12': '12px',
+                        '16': '16px',
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style type="text/css">
+        :root {
+            --glass-bg: rgba(15, 23, 42, 0.6);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --glass-blur: 16px;
+            --primary-cyan: #06b6d4;
+            --primary-purple: #a855f7;
+        }
+
+        body {
+            background-color: #0f172a;
+            color: #f1f5f9;
+            overflow-x: hidden;
+        }
+
+        .glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(var(--glass-blur));
+            border: 1px solid var(--glass-border);
+        }
+
+        .glass-cyan {
+            border: 1px solid rgba(6, 182, 212, 0.2);
+            box-shadow: 0 0 20px rgba(6, 182, 212, 0.1);
+        }
+
+        .text-gradient {
+            background: linear-gradient(to right, var(--primary-cyan), var(--primary-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes scan {
+            0% { top: 0; opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { top: 100%; opacity: 0; }
+        }
+
+        .scan-line {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--primary-cyan), transparent);
+            box-shadow: 0 0 15px var(--primary-cyan);
+            position: absolute;
+            width: 100%;
+            z-index: 20;
+            animation: scan 3s ease-in-out infinite;
+        }
+
+        .glow-cyan {
+            box-shadow: 0 0 30px rgba(6, 182, 212, 0.4);
+        }
+
+        .glow-purple {
+            box-shadow: 0 0 30px rgba(168, 85, 247, 0.4);
+        }
+
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .mesh-gradient {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(6, 182, 212, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(168, 85, 247, 0.15) 0%, transparent 50%);
+            filter: blur(60px);
+        }
+    </style>
+</head>
+<body class="font-sans antialiased">
+    <!-- Background Elements -->
+    <div class="mesh-gradient"></div>
+    <canvas id="bg-canvas"></canvas>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 px-6 py-4">
+        <div class="max-w-7xl mx-auto flex items-center justify-between glass rounded-2xl px-6 py-3 border-white/5 backdrop-blur-12">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-cyan-500/20 border border-cyan-500/30 rounded-lg flex items-center justify-center">
+                    <iconify-icon icon="lucide:scan-eye" class="text-cyan-500 text-2xl"></iconify-icon>
+                </div>
+                <span class="font-display font-bold text-xl tracking-tight">OvoScan <span class="text-cyan-500">AI</span></span>
+            </div>
+            
+            <div class="hidden md:flex items-center gap-8">
+                <a href="#how-it-works" class="text-slate-400 hover:text-cyan-400 transition-colors text-sm font-medium">How it Works</a>
+                <a href="#technology" class="text-slate-400 hover:text-cyan-400 transition-colors text-sm font-medium">Technology</a>
+                <a href="#case-studies" class="text-slate-400 hover:text-cyan-400 transition-colors text-sm font-medium">Case Studies</a>
+                <a href="#pricing" class="text-slate-400 hover:text-cyan-400 transition-colors text-sm font-medium">Pricing</a>
+            </div>
+
+            <div class="flex items-center gap-6">
+                <a href="#" class="text-slate-400 hover:text-white transition-colors text-sm font-medium hidden sm:block">Log In</a>
+                <button class="bg-cyan-500 hover:bg-cyan-400 text-navy-950 px-5 py-2.5 rounded-xl font-bold text-sm transition-all hover:scale-105 glow-cyan">
+                    Get Started
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative pt-32 pb-20 md:pt-48 md:pb-32 px-6 overflow-hidden">
+        <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
+            <!-- Left Content -->
+            <div class="relative z-10">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-xs font-bold tracking-wider uppercase mb-6">
+                    <span class="relative flex h-2 w-2">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
+                    </span>
+                    Next-Gen Avian Intelligence
+                </div>
+                
+                <h1 class="font-display text-5xl md:text-7xl font-bold leading-[1.1] mb-8 tracking-tight">
+                    Unlock the Future of <span class="text-gradient">Egg Fertility</span> Detection.
+                </h1>
+                
+                <p class="text-slate-400 text-lg md:text-xl mb-10 max-w-xl leading-relaxed">
+                    Revolutionizing hatcheries with 99.8% precision AI. Non-invasive, lightning-fast scanning for maximum yield optimization.
+                </p>
+
+                <div class="flex flex-col sm:flex-row gap-4 mb-16">
+                    <button class="bg-cyan-500 hover:bg-cyan-400 text-navy-950 px-8 py-4 rounded-2xl font-bold text-lg flex items-center justify-center gap-2 transition-all hover:scale-105 glow-cyan">
+                        Experience the Demo
+                        <iconify-icon icon="lucide:arrow-right" class="text-xl"></iconify-icon>
+                    </button>
+                    <button class="glass border-white/10 hover:bg-white/5 px-8 py-4 rounded-2xl font-bold text-lg flex items-center justify-center gap-2 transition-all hover:scale-105">
+                        <iconify-icon icon="lucide:play-circle" class="text-2xl text-purple-500"></iconify-icon>
+                        Watch Video
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-3 gap-8 border-t border-white/5 pt-8">
+                    <div>
+                        <div class="text-2xl md:text-3xl font-display font-bold text-white mb-1">99.8%</div>
+                        <div class="text-slate-500 text-sm uppercase tracking-widest font-bold">Accuracy</div>
+                    </div>
+                    <div>
+                        <div class="text-2xl md:text-3xl font-display font-bold text-white mb-1">1.2s</div>
+                        <div class="text-slate-500 text-sm uppercase tracking-widest font-bold">Scan Time</div>
+                    </div>
+                    <div>
+                        <div class="text-2xl md:text-3xl font-display font-bold text-white mb-1">50M+</div>
+                        <div class="text-slate-500 text-sm uppercase tracking-widest font-bold">Eggs Scanned</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Content: Product Showcase -->
+            <div class="relative flex justify-center lg:justify-end">
+                <div class="relative w-full max-w-[500px] aspect-square flex items-center justify-center animate-float">
+                    <!-- Glass Container -->
+                    <div class="absolute inset-0 rounded-[3rem] glass glass-cyan overflow-hidden bg-gradient-to-br from-cyan-900/20 to-purple-900/20 backdrop-blur-16">
+                        <!-- Scan Animation -->
+                        <div class="scan-line"></div>
+                        
+                        <!-- Floating Egg -->
+                        <div class="relative z-10 flex items-center justify-center h-full">
+                            <span class="text-[180px] md:text-[220px] drop-shadow-[0_0_40px_rgba(6,182,212,0.4)]">🥚</span>
+                        </div>
+
+                        <!-- UI Overlays -->
+                        <div class="absolute top-8 left-8 glass rounded-2xl px-4 py-3 flex items-center gap-3 border-cyan-500/20">
+                            <div class="w-8 h-8 rounded-full bg-emerald-500/20 flex items-center justify-center">
+                                <iconify-icon icon="lucide:check" class="text-emerald-500"></iconify-icon>
+                            </div>
+                            <div>
+                                <div class="text-xs text-slate-400 font-bold uppercase tracking-tighter">Status</div>
+                                <div class="text-sm font-bold text-white">Fertile Detected</div>
+                            </div>
+                        </div>
+
+                        <div class="absolute bottom-8 right-8 glass rounded-2xl p-4 w-48 border-purple-500/20">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-xs font-bold text-slate-400">CONFIDENCE</span>
+                                <span class="text-xs font-bold text-cyan-400">98.8%</span>
+                            </div>
+                            <div class="w-full h-1.5 bg-white/5 rounded-full overflow-hidden">
+                                <div class="h-full bg-gradient-to-r from-cyan-500 to-purple-500 w-[98.8%]"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Decorative Background Glow -->
+                    <div class="absolute -z-10 w-[120%] h-[120%] bg-cyan-500/10 rounded-full blur-[80px]"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-24 px-6 relative" id="technology">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="font-display text-4xl md:text-5xl font-bold mb-6">Precision Technology, Zero Effort</h2>
+                <p class="text-slate-400 max-w-2xl mx-auto text-lg">Our proprietary neural network architecture is designed specifically for avian biological structures, delivering lab-grade accuracy in seconds.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Feature 1 -->
+                <div class="glass p-8 rounded-[2rem] hover:-translate-y-2 transition-all duration-300 group hover:border-cyan-500/30">
+                    <div class="w-14 h-14 bg-cyan-500/10 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-cyan-500/20 transition-colors">
+                        <iconify-icon icon="lucide:zap" class="text-cyan-500 text-3xl"></iconify-icon>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">Ultra-Fast Processing</h3>
+                    <p class="text-slate-400 leading-relaxed">Scan entire trays in under 10 seconds with zero throughput bottleneck.</p>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="glass p-8 rounded-[2rem] hover:-translate-y-2 transition-all duration-300 group hover:border-purple-500/30">
+                    <div class="w-14 h-14 bg-purple-500/10 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-purple-500/20 transition-colors">
+                        <iconify-icon icon="lucide:shield-check" class="text-purple-500 text-3xl"></iconify-icon>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">Non-Invasive</h3>
+                    <p class="text-slate-400 leading-relaxed">Advanced optical sensors ensure zero contact or thermal stress on embryos.</p>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="glass p-8 rounded-[2rem] hover:-translate-y-2 transition-all duration-300 group hover:border-blue-500/30">
+                    <div class="w-14 h-14 bg-blue-500/10 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-blue-500/20 transition-colors">
+                        <iconify-icon icon="lucide:bar-chart-3" class="text-blue-500 text-3xl"></iconify-icon>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">Smart Analytics</h3>
+                    <p class="text-slate-400 leading-relaxed">Deep-dive reports on fertility trends, seasonal variations, and flock health.</p>
+                </div>
+
+                <!-- Feature 4 -->
+                <div class="glass p-8 rounded-[2rem] hover:-translate-y-2 transition-all duration-300 group hover:border-emerald-500/30">
+                    <div class="w-14 h-14 bg-emerald-500/10 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-emerald-500/20 transition-colors">
+                        <iconify-icon icon="lucide:refresh-cw" class="text-emerald-500 text-3xl"></iconify-icon>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">Self-Learning</h3>
+                    <p class="text-slate-400 leading-relaxed">AI models continuously adapt and improve with every batch processed.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Product Story Section -->
+    <section class="py-24 px-6 relative" id="how-it-works">
+        <div class="max-w-7xl mx-auto">
+            <div class="glass rounded-[3rem] overflow-hidden grid lg:grid-cols-2 backdrop-blur-16 border-white/5">
+                <div class="p-10 md:p-16">
+                    <h2 class="font-display text-4xl font-bold mb-8 leading-tight">Optimizing Hatchery Intelligence from Day Zero</h2>
+                    <p class="text-slate-400 text-lg mb-10 leading-relaxed">OvoScan AI was born in the intersection of avian biology and deep learning. Our mission is to eliminate waste and maximize biological potential through data-driven insight.</p>
+                    
+                    <ul class="space-y-6">
+                        <li class="flex gap-4">
+                            <div class="flex-shrink-0 w-6 h-6 rounded-full bg-cyan-500/20 flex items-center justify-center">
+                                <iconify-icon icon="lucide:check" class="text-cyan-500 text-sm"></iconify-icon>
+                            </div>
+                            <div>
+                                <h4 class="font-bold mb-1">Early Stage Detection</h4>
+                                <p class="text-slate-400 text-sm">Identify fertility accurately as early as 48 hours into incubation.</p>
+                            </div>
+                        </li>
+                        <li class="flex gap-4">
+                            <div class="flex-shrink-0 w-6 h-6 rounded-full bg-cyan-500/20 flex items-center justify-center">
+                                <iconify-icon icon="lucide:check" class="text-cyan-500 text-sm"></iconify-icon>
+                            </div>
+                            <div>
+                                <h4 class="font-bold mb-1">IoT Integration</h4>
+                                <p class="text-slate-400 text-sm">Seamlessly sync data with existing hatchery management software.</p>
+                            </div>
+                        </li>
+                        <li class="flex gap-4">
+                            <div class="flex-shrink-0 w-6 h-6 rounded-full bg-cyan-500/20 flex items-center justify-center">
+                                <iconify-icon icon="lucide:check" class="text-cyan-500 text-sm"></iconify-icon>
+                            </div>
+                            <div>
+                                <h4 class="font-bold mb-1">Scalable Infrastructure</h4>
+                                <p class="text-slate-400 text-sm">From local farms to industrial hatcheries, our solution scales with you.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="bg-navy-950/40 p-4 lg:p-10">
+                    <div class="grid grid-cols-2 grid-rows-2 gap-4 h-full">
+                        <img src="https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?auto=format&fit=crop&q=80&w=800" alt="Laboratory" class="w-full h-full object-cover rounded-2xl opacity-80 hover:opacity-100 transition-opacity">
+                        <img src="https://images.unsplash.com/photo-1530036067142-31e9b88da9b9?auto=format&fit=crop&q=80&w=800" alt="Eggs" class="w-full h-full object-cover rounded-2xl opacity-80 hover:opacity-100 transition-opacity">
+                        <img src="https://images.unsplash.com/photo-1595304441586-90510526e82a?auto=format&fit=crop&q=80&w=800" alt="Tech" class="w-full h-full object-cover rounded-2xl opacity-80 hover:opacity-100 transition-opacity">
+                        <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&q=80&w=800" alt="Team" class="w-full h-full object-cover rounded-2xl opacity-80 hover:opacity-100 transition-opacity">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="py-24 px-6 relative" id="case-studies">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="font-display text-4xl font-bold mb-6">Trusted by Leading Hatcheries</h2>
+                <p class="text-slate-400">Join over 250+ partners optimizing their biological assets.</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Testimonial 1 -->
+                <div class="glass p-8 rounded-[2rem] border-white/5 hover:border-cyan-500/30 transition-all group">
+                    <div class="flex gap-1 mb-6">
+                        <iconify-icon icon="material-symbols:star" class="text-cyan-500"></iconify-icon>
+                        <iconify-icon icon="material-symbols:star" class="text-cyan-500"></iconify-icon>
+                        <iconify-icon icon="material-symbols:star" class="text-cyan-500"></iconify-icon>
+                        <iconify-icon icon="material-symbols:star" class="text-cyan-500"></iconify-icon>
+                        <iconify-icon icon="material-symbols:star" class="text-cyan-500"></iconify-icon>
+                    </div>
+                    <p class="text-slate-300 italic mb-8 leading-relaxed">"OvoScan AI transformed our efficiency. We've seen a 14% increase in successful hatch rates since implementation."</p>
+                    <div class="flex items-center gap-4">
+                        <img src="https://i.pravatar.cc/150?u=1" alt="User" class="w-12 h-12 rounded-full">
+                        <div>
+                            <div class="font-bold">David Chen</div>
+                            <div class="text-xs text-slate-500">Director, Global Poultry Co.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 2 -->
+                <div class="glass p-8 rounded-[2rem] border-white/5 hover:border-purple-500/30 transition-all group">
+                    <div class="flex gap-1 mb-6">
+                        <iconify-icon icon="material-symbols:star" class="text-purple-500"></iconify-icon>
+                        <iconify-icon icon="material-symbols:star" class="text-purple-500"></iconify-icon>
+                        <iconify-icon icon="material-symbols:star" class="text-purple-500"></iconify-icon>
+                        <iconify-icon icon="material-symbols:star" class="text-purple-500"></iconify-icon>
+                        <iconify-icon icon="material-symbols:star" class="text-purple-500"></iconify-icon>
+                    </div>
+                    <p class="text-slate-300 italic mb-8 leading-relaxed">"The scan speed is unbelievable. Our technicians saved hundreds of manual hours in the first month alone."</p>
+                    <div class="flex items-center gap-4">
+                        <img src="https://i.pravatar.cc/150?u=2" alt="User" class="w-12 h-12 rounded-full">
+                        <div>
+                            <div class="font-bold">Sarah Jenkins</div>
+                            <div class="text-xs text-slate-500">Operations Lead, AviCare</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 3 -->
+                <div class="glass p-8 rounded-[2rem] border-white/5 hover:border-blue-500/30 transition-all group">
+                    <div class="flex gap-1 mb-6">
+                        <iconify-icon icon="material-symbols:star" class="text-blue-500"></iconify-icon>
+                        <iconify-icon icon="material-symbols:star" class="text-blue-500"></iconify-icon>
+                        <iconify-icon icon="material-symbols:star" class="text-blue-500"></iconify-icon>
+                        <iconify-icon icon="material-symbols:star" class="text-blue-500"></iconify-icon>
+                        <iconify-icon icon="material-symbols:star" class="text-blue-500"></iconify-icon>
+                    </div>
+                    <p class="text-slate-300 italic mb-8 leading-relaxed">"Integration was seamless. The API handles our high-volume data without skipping a beat. Highly recommend."</p>
+                    <div class="flex items-center gap-4">
+                        <img src="https://i.pravatar.cc/150?u=3" alt="User" class="w-12 h-12 rounded-full">
+                        <div>
+                            <div class="font-bold">Marcus Thorne</div>
+                            <div class="text-xs text-slate-500">CTO, BioHatch Systems</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-24 px-6 relative overflow-hidden">
+        <div class="max-w-5xl mx-auto relative">
+            <div class="glass p-12 md:p-20 rounded-[3rem] text-center relative overflow-hidden bg-gradient-to-br from-slate-900/60 to-cyan-900/10 backdrop-blur-16 border-white/10">
+                <!-- Decorative Blur Orbs -->
+                <div class="absolute -top-20 -right-20 w-64 h-64 bg-cyan-500/10 rounded-full blur-[80px]"></div>
+                <div class="absolute -bottom-20 -left-20 w-64 h-64 bg-purple-500/10 rounded-full blur-[80px]"></div>
+
+                <h2 class="font-display text-4xl md:text-5xl font-bold mb-8">Ready to Optimize Your Yield?</h2>
+                <p class="text-slate-400 text-lg mb-12 max-w-2xl mx-auto">Start your 30-day free pilot program and experience the next generation of hatchery intelligence today.</p>
+                
+                <div class="flex flex-col sm:flex-row gap-6 justify-center">
+                    <button class="bg-cyan-500 hover:bg-cyan-400 text-navy-950 px-10 py-5 rounded-2xl font-bold text-lg flex items-center justify-center gap-2 transition-all hover:scale-105 glow-cyan">
+                        Get Started Now
+                        <iconify-icon icon="lucide:sparkles" class="text-xl"></iconify-icon>
+                    </button>
+                    <button class="glass border-white/10 hover:bg-white/5 px-10 py-5 rounded-2xl font-bold text-lg transition-all hover:scale-105">
+                        Contact Sales
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-16 px-6 bg-navy-950/60 border-t border-white/5">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid md:grid-cols-4 gap-12 mb-16">
+                <div class="col-span-2">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-8 h-8 bg-cyan-500/20 border border-cyan-500/30 rounded-lg flex items-center justify-center">
+                            <iconify-icon icon="lucide:scan-eye" class="text-cyan-500 text-xl"></iconify-icon>
+                        </div>
+                        <span class="font-display font-bold text-xl tracking-tight">OvoScan <span class="text-cyan-500">AI</span></span>
+                    </div>
+                    <p class="text-slate-500 max-w-sm">Advancing poultry science through state-of-the-art computer vision and neural intelligence.</p>
+                </div>
+                
+                <div>
+                    <h5 class="font-bold mb-6">Company</h5>
+                    <ul class="space-y-4 text-slate-500 text-sm">
+                        <li><a href="#" class="hover:text-cyan-400 transition-colors">About Us</a></li>
+                        <li><a href="#" class="hover:text-cyan-400 transition-colors">Technology</a></li>
+                        <li><a href="#" class="hover:text-cyan-400 transition-colors">Case Studies</a></li>
+                        <li><a href="#" class="hover:text-cyan-400 transition-colors">Contact</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h5 class="font-bold mb-6">Connect</h5>
+                    <div class="flex gap-4">
+                        <a href="#" class="w-10 h-10 glass border-white/5 rounded-full flex items-center justify-center hover:text-cyan-400 transition-all hover:scale-110">
+                            <iconify-icon icon="ri:twitter-x-fill"></iconify-icon>
+                        </a>
+                        <a href="#" class="w-10 h-10 glass border-white/5 rounded-full flex items-center justify-center hover:text-cyan-400 transition-all hover:scale-110">
+                            <iconify-icon icon="ri:linkedin-fill"></iconify-icon>
+                        </a>
+                        <a href="#" class="w-10 h-10 glass border-white/5 rounded-full flex items-center justify-center hover:text-cyan-400 transition-all hover:scale-110">
+                            <iconify-icon icon="ri:github-fill"></iconify-icon>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex flex-col md:flex-row justify-between items-center gap-6 pt-12 border-t border-white/5 text-xs text-slate-500 font-medium">
+                <div>© 2024 OvoScan AI Technologies Inc. All rights reserved.</div>
+                <div class="flex gap-8">
+                    <a href="#" class="hover:text-white transition-colors">Terms of Service</a>
+                    <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
+                    <a href="#" class="hover:text-white transition-colors">Cookie Policy</a>
+                    <a href="#" class="hover:text-white transition-colors">Support</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Main TypeScript Entry -->
+    <script type="module" src="/src/main.ts"></script>
+</body>
+</html>
