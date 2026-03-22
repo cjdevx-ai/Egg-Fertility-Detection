@@ -1,0 +1,153 @@
+@import url('https://api.fontshare.com/v2/css?f[]=clash-grotesk@400,500,600,700&f[]=satoshi@400,500,700&display=swap');
+
+:root {
+    --navy-800: #1e293b;
+    --navy-900: #0f172a;
+    --navy-950: #020617;
+    --cyan-400: #22d3ee;
+    --cyan-500: #06b6d4;
+    --cyan-600: #0891b2;
+    --cyan-900: #164e63;
+    --purple-500: #a855f7;
+    --purple-900: #581c87;
+    --glass-bg: rgba(15, 23, 42, 0.6);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --glass-blur: 16px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--navy-900);
+    color: #f1f5f9;
+    font-family: 'Satoshi', sans-serif;
+    overflow-x: hidden;
+    line-height: 1.5;
+}
+
+h1, h2, h3, h4, h5, .font-display {
+    font-family: 'Clash Grotesk', sans-serif;
+}
+
+.glass {
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur));
+    border: 1px solid var(--glass-border);
+}
+
+.glass-cyan {
+    border: 1px solid rgba(6, 182, 212, 0.2);
+    box-shadow: 0 0 20px rgba(6, 182, 212, 0.1);
+}
+
+.text-gradient {
+    background: linear-gradient(to right, var(--cyan-500), var(--purple-500));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+}
+
+.animate-float {
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes scan {
+    0% { top: 0; opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { top: 100%; opacity: 0; }
+}
+
+.scan-line {
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--cyan-500), transparent);
+    box-shadow: 0 0 15px var(--cyan-500);
+    position: absolute;
+    width: 100%;
+    z-index: 20;
+    animation: scan 3s ease-in-out infinite;
+}
+
+.glow-cyan {
+    box-shadow: 0 0 30px rgba(6, 182, 212, 0.4);
+}
+
+.glow-purple {
+    box-shadow: 0 0 30px rgba(168, 85, 247, 0.4);
+}
+
+#bg-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: none;
+}
+
+.mesh-gradient {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -2;
+    background: 
+        radial-gradient(circle at 20% 30%, rgba(6, 182, 212, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(168, 85, 247, 0.15) 0%, transparent 50%);
+    filter: blur(60px);
+}
+
+/* Utility classes to replicate Tailwind behavior */
+.flex { display: flex; }
+.flex-col { flex-direction: column; }
+.items-center { align-items: center; }
+.justify-center { justify-content: center; }
+.justify-between { justify-content: space-between; }
+.gap-2 { gap: 0.5rem; }
+.gap-3 { gap: 0.75rem; }
+.gap-4 { gap: 1rem; }
+.gap-6 { gap: 1.5rem; }
+.gap-8 { gap: 2rem; }
+.grid { display: grid; }
+.w-full { width: 100%; }
+.h-full { height: 100%; }
+.max-w-7xl { max-width: 80rem; margin-left: auto; margin-right: auto; }
+.px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
+.py-4 { padding-top: 1rem; padding-bottom: 1rem; }
+.relative { position: relative; }
+.fixed { position: fixed; }
+.absolute { position: absolute; }
+.top-0 { top: 0; }
+.z-50 { z-index: 50; }
+.rounded-2xl { border-radius: 1rem; }
+.rounded-xl { border-radius: 0.75rem; }
+.text-sm { font-size: 0.875rem; }
+.font-bold { font-weight: 700; }
+.font-medium { font-weight: 500; }
+.transition-all { transition-property: all; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 150ms; }
+.hover\:scale-105:hover { transform: scale(1.05); }
+
+/* Buttons */
+.btn-primary {
+    background-color: var(--cyan-500);
+    color: var(--navy-950);
+    border: none;
+    cursor: pointer;
+    font-weight: 700;
+}
+
+.btn-primary:hover {
+    background-color: var(--cyan-400);
+}
+
+/* Add more as needed during porting */
