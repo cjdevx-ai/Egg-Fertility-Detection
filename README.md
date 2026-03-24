@@ -1,45 +1,45 @@
 # OvoScan AI - Egg Fertility Detection Platform
 
-OvoScan AI is a high-performance platform designed for commercial hatcheries to automate egg fertility detection using deep learning and computer vision.
+OvoScan AI is a high-performance, automated platform designed for commercial hatcheries to detect egg fertility using advanced deep learning and computer vision.
 
-## Tech Stack
+## Tech Stack Overview
 
-### Frontend
-- React 19 (TypeScript)
-- Vite (Build Tool)
-- Tailwind CSS (Styling)
-- Lucide React (Icons)
-- Iconify (Icon Framework)
-- Glassmorphism UI Design
+### Frontend Architecture
+- **React 19**: Utilizing the latest React features for a responsive and modern user interface.
+- **TypeScript**: Ensuring type safety and robust code across the frontend application.
+- **Vite**: Providing a lightning-fast development environment and optimized production builds.
+- **Tailwind CSS**: Implementing a custom design system with a focus on Glassmorphism and modern aesthetics.
+- **Lucide React & Iconify**: Integration of high-quality vector icons for a polished visual experience.
+- **HTML5 Canvas**: Custom particle systems for bioluminescent background effects.
 
-### Backend
-- Python 3.12
-- FastAPI (REST API Framework)
-- Uvicorn (ASGI Server)
-- Static File Serving (SPA Support)
+### Backend Services
+- **Python 3.12**: Leveraging the latest Python version for performance and modern language features.
+- **FastAPI**: A high-performance web framework for building APIs with Python, providing automatic documentation and validation.
+- **Uvicorn**: An ASGI web server implementation for Python, optimized for speed.
+- **Static Asset Serving**: Integrated support for serving the Single Page Application (SPA) directly from the backend.
 
-### AI and Computer Vision
-- YOLO (Ultralytics)
-- ONNX Runtime (High-performance Inference)
-- OpenCV (Image Processing)
-- Pillow (PIL)
+### Artificial Intelligence & Computer Vision
+- **YOLO (Ultralytics)**: State-of-the-art object detection model for real-time fertility identification.
+- **ONNX Runtime**: High-performance inference engine for executing machine learning models across different hardware.
+- **OpenCV**: Advanced image processing library for frame manipulation and pre-processing.
+- **Pillow (PIL)**: Specialized library for high-quality image annotation and final output rendering.
+- **NumPy**: Efficient numerical computations for handling multi-dimensional arrays and matrices.
 
-### Deployment
-- Docker (Multi-stage Build)
-- Google Cloud Run Ready
-- Monolith Architecture
+### Infrastructure & Deployment
+- **Docker**: Containerization using multi-stage builds to produce a single, optimized deployment image.
+- **Monolith Architecture**: Combined backend and frontend for simplified deployment and reduced latency.
+- **Google Cloud Run Ready**: Configured for serverless deployment with environment-based port mapping and stateless execution.
 
 ## Project Structure
 
-The project uses a monolithic architecture where the FastAPI backend serves both the API endpoints and the static frontend assets.
-
-- /backend: Python source code, requirements, and AI model weights.
-- /frontend: React source code and build configuration.
-- /Dockerfile: Multi-stage build for producing a single deployment image.
+- **backend/**: Contains the FastAPI application, the YOLO model weights, and the computer vision logic.
+- **frontend/**: Contains the React source code, components, and styling configurations.
+- **Dockerfile**: Defines the multi-stage build process for the entire application.
+- **.dockerignore**: Specifies files and directories to be excluded from the Docker build context.
 
 ## Getting Started
 
-### Docker Deployment (Recommended)
+### Docker Deployment
 
 To build and run the entire project as a single container:
 
@@ -54,20 +54,6 @@ To build and run the entire project as a single container:
    ```
    The application will be available at http://localhost:8080.
 
-### Google Cloud Run
-
-This project is configured for direct deployment to Google Cloud Run.
-
-1. Submit to Google Cloud Build:
-   ```bash
-   gcloud builds submit --tag gcr.io/PROJECT_ID/ovoscan-ai
-   ```
-
-2. Deploy to Cloud Run:
-   ```bash
-   gcloud run deploy ovoscan-ai --image gcr.io/PROJECT_ID/ovoscan-ai --platform managed
-   ```
-
 ### Local Development
 
 #### Backend Setup
@@ -80,11 +66,10 @@ This project is configured for direct deployment to Google Cloud Run.
    ```bash
    pip install -r requirements.txt
    ```
-4. Run the API:
+4. Start the application:
    ```bash
    python main.py
    ```
-   Note: For local development, the backend listens on port 8080 by default.
 
 #### Frontend Setup
 1. Navigate to the frontend directory:
@@ -95,22 +80,22 @@ This project is configured for direct deployment to Google Cloud Run.
    ```bash
    npm install
    ```
-3. Start the dev server:
+3. Start the development server:
    ```bash
    npm run dev
    ```
-   The frontend will be available at http://localhost:5173. Ensure the backend is running for API features.
+   The frontend will be available at http://localhost:5173.
 
-## Visual Principles
+## Visual Design Principles
 
-- Glassmorphism: Semi-transparent surfaces and backdrop filters for depth.
-- Bioluminescent Theme: Particle systems mimicking biological life.
-- Real-time Diagnostics: Sub-second inference for immediate fertility feedback.
+- **Glassmorphism**: Use of semi-transparent backgrounds and backdrop filters to create depth.
+- **Bioluminescence**: A color palette and animation style inspired by biological life and advanced technology.
+- **Real-time Feedback**: Minimal latency between image capture and AI-driven diagnostic results.
 
 ## Technical Requirements
 
-- Python 3.10+
-- Node.js 20+
+- Python 3.10 or higher
+- Node.js 20 or higher
 - Docker (for containerized deployment)
 
 ## License
