@@ -1,85 +1,117 @@
 # OvoScan AI - Egg Fertility Detection Platform
 
-OvoScan AI is a state-of-the-art platform designed for commercial hatcheries to automate and optimize egg fertility detection using deep learning and computer vision.
+OvoScan AI is a high-performance platform designed for commercial hatcheries to automate egg fertility detection using deep learning and computer vision.
+
+## Tech Stack
+
+### Frontend
+- React 19 (TypeScript)
+- Vite (Build Tool)
+- Tailwind CSS (Styling)
+- Lucide React (Icons)
+- Iconify (Icon Framework)
+- Glassmorphism UI Design
+
+### Backend
+- Python 3.12
+- FastAPI (REST API Framework)
+- Uvicorn (ASGI Server)
+- Static File Serving (SPA Support)
+
+### AI and Computer Vision
+- YOLO (Ultralytics)
+- ONNX Runtime (High-performance Inference)
+- OpenCV (Image Processing)
+- Pillow (PIL)
+
+### Deployment
+- Docker (Multi-stage Build)
+- Google Cloud Run Ready
+- Monolith Architecture
 
 ## Project Structure
 
-The project is divided into two main components:
+The project uses a monolithic architecture where the FastAPI backend serves both the API endpoints and the static frontend assets.
 
-### Backend
-A FastAPI-based REST API that serves a YOLO-based computer vision model exported to ONNX format.
-- **Model:** YOLO Detection (ONNX)
-- **Framework:** FastAPI
-- **Inference:** Ultralytics / ONNX Runtime
-- **Capabilities:**
-  - REST endpoint for static image prediction.
-  - MJPEG streaming for real-time video camera feed with overlaid detections.
-
-### Frontend
-A premium landing page built with modern web technologies.
-- **Framework:** Tailwind CSS (via PlayCDN)
-- **Language:** TypeScript
-- **Design:** Glassmorphism with bioluminescent animated background effects.
-- **Build Tool:** Vite
+- /backend: Python source code, requirements, and AI model weights.
+- /frontend: React source code and build configuration.
+- /Dockerfile: Multi-stage build for producing a single deployment image.
 
 ## Getting Started
 
-### Backend Setup
+### Docker Deployment (Recommended)
 
+To build and run the entire project as a single container:
+
+1. Build the image:
+   ```bash
+   docker build -t ovoscan-ai .
+   ```
+
+2. Run the container:
+   ```bash
+   docker run -p 8080:8080 ovoscan-ai
+   ```
+   The application will be available at http://localhost:8080.
+
+### Google Cloud Run
+
+This project is configured for direct deployment to Google Cloud Run.
+
+1. Submit to Google Cloud Build:
+   ```bash
+   gcloud builds submit --tag gcr.io/PROJECT_ID/ovoscan-ai
+   ```
+
+2. Deploy to Cloud Run:
+   ```bash
+   gcloud run deploy ovoscan-ai --image gcr.io/PROJECT_ID/ovoscan-ai --platform managed
+   ```
+
+### Local Development
+
+#### Backend Setup
 1. Navigate to the backend directory:
    ```bash
    cd backend
    ```
-
-2. Create a virtual environment:
-   ```bash
-   python -m venv .venv
-   ```
-
-3. Activate the virtual environment:
-   - Windows: `.venv\Scripts\activate`
-   - Linux/macOS: `source .venv/bin/activate`
-
-4. Install dependencies:
+2. Create and activate a virtual environment.
+3. Install dependencies:
    ```bash
    pip install -r requirements.txt
    ```
-
-5. Run the application:
+4. Run the API:
    ```bash
    python main.py
    ```
-   The API will be available at http://localhost:8000.
+   Note: For local development, the backend listens on port 8080 by default.
 
-### Frontend Setup
-
+#### Frontend Setup
 1. Navigate to the frontend directory:
    ```bash
    cd frontend
    ```
-
-2. Install Node.js dependencies:
+2. Install dependencies:
    ```bash
    npm install
    ```
-
-3. Start the development server:
+3. Start the dev server:
    ```bash
    npm run dev
    ```
-   The frontend will be available at http://localhost:5173 (or the port specified by Vite).
+   The frontend will be available at http://localhost:5173. Ensure the backend is running for API features.
 
-## Key Visual Principles
+## Visual Principles
 
-- **Glassmorphism:** Components use backdrop filters and semi-transparent backgrounds to create depth and a modern aesthetic.
-- **Bioluminescent Theme:** A custom canvas-based particle system mimics cellular and biological movement, reinforcing the "life detection" theme.
-- **High-Performance Inference:** The system is optimized for sub-second scanning using ONNX exports of the underlying neural network.
+- Glassmorphism: Semi-transparent surfaces and backdrop filters for depth.
+- Bioluminescent Theme: Particle systems mimicking biological life.
+- Real-time Diagnostics: Sub-second inference for immediate fertility feedback.
 
 ## Technical Requirements
 
 - Python 3.10+
-- Node.js 18+
-- Webcam (for live video feed demo)
+- Node.js 20+
+- Docker (for containerized deployment)
 
 ## License
 

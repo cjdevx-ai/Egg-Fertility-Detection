@@ -1,6 +1,9 @@
 from fastapi import FastAPI, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 import io
+import os
 from PIL import Image
 import base64
 from detect import load_model, predict_image
@@ -17,13 +20,10 @@ app.add_middleware(
 )
 
 # Load model once at startup (prefers best.onnx)
-model = load_model("model/weights/best.onnx")
+model_path = os.path.join(os.path.dirname(__file__), "model", "weights", "best.onnx")
+model = load_model(model_path)
 
-@app.get("/")
-async def root():
-    return {"message": "OvoScan AI API is running"}
-
-@app.post("/predict")
+@app.post("/api/predict")
 async def predict(file: UploadFile = File(...), conf: float = 0.05):
     """
     Receives an image, runs YOLO detection via detect.py, 
@@ -52,7 +52,22 @@ async def predict(file: UploadFile = File(...), conf: float = 0.05):
         traceback.print_exc()
         return {"success": False, "error": str(e)}
 
+# Serve Static Files (Frontend)
+# We assume the frontend/dist folder is copied to /app/static in Docker
+static_path = os.path.join(os.path.dirname(__file__), "static")
+if os.path.exists(static_path):
+    app.mount("/", StaticFiles(directory=static_path, html=True), name="static")
+
+@app.get("/{full_path:path}")
+async def catch_all(full_path: str):
+    # This ensures React Router / SPA works
+    index_file = os.path.join(static_path, "index.html")
+    if os.path.exists(index_file):
+        return FileResponse(index_file)
+    return {"message": "OvoScan AI API is running"}
+
 if __name__ == "__main__":
     import uvicorn
-    # Standard port for OvoScan backend
-    uvicorn.run(app, host="0.0.0.0", port=8888)
+    # Use PORT environment variable for Cloud Run, default to 8080
+    port = int(os.environ.get("PORT", 8080))
+    uvicorn.run(app, host="0.0.0.0", port=port)

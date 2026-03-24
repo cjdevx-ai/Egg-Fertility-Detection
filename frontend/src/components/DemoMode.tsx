@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 
-const BACKEND_URL = 'http://localhost:8888';
+const BACKEND_URL = '';
 
 type Mode = 'idle' | 'select' | 'live' | 'upload';
 
@@ -63,7 +63,7 @@ const DemoMode: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen, 
           const fd = new FormData();
           fd.append('file', blob);
           try {
-            const res = await fetch(`${BACKEND_URL}/predict?conf=0.1`, { method: 'POST', body: fd });
+            const res = await fetch(`${BACKEND_URL}/api/predict?conf=0.1`, { method: 'POST', body: fd });
             const data = await res.json();
             if (data.image) {
               setAiImage(data.image);
@@ -103,7 +103,7 @@ const DemoMode: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen, 
     const fd = new FormData();
     fd.append('file', file);
     try {
-      const res = await fetch(`${BACKEND_URL}/predict?conf=0.1`, { method: 'POST', body: fd });
+      const res = await fetch(`${BACKEND_URL}/api/predict?conf=0.1`, { method: 'POST', body: fd });
       const data = await res.json();
       setIsAnalyzing(false);
       if (data.image) {
