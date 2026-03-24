@@ -15,7 +15,7 @@ const Navbar: React.FC = () => {
       </div>
 
       <div className="hidden md:flex items-center gap-8">
-        {['How it Works', 'Technology', 'Case Studies', 'Pricing'].map((link) => (
+        {['How it Works', 'Technology', 'Pricing'].map((link) => (
           <a
             key={link}
             href={`#${link.toLowerCase().replace(/ /g, '-')}`}
