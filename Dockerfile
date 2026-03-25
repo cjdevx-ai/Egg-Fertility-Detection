@@ -30,5 +30,6 @@ COPY --from=frontend-builder /app/frontend/dist ./static/dist
 # Expose port (Cloud Run uses PORT env var, but 8080 is a good default)
 EXPOSE 8080
 
-# Run the application
-CMD ["python", "main.py"]
+# Run the application using uvicorn directly
+# This is more robust than calling python main.py
+CMD ["sh", "-c", "uvicorn main:app --host 0.0.0.0 --port ${PORT:-8080}"]
