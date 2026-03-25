@@ -12,7 +12,7 @@ WORKDIR /app
 
 # Install system dependencies (for OpenCV, etc.)
 RUN apt-get update && apt-get install -y \
-    libgl1-mesa-glx \
+    libgl1 \
     libglib2.0-0 \
     && rm -rf /var/lib/apt/lists/*
 
@@ -23,8 +23,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy backend source
 COPY backend/ ./
 
-# Copy built frontend from Stage 1 to a 'static' directory in backend
-COPY --from=frontend-builder /app/frontend/dist ./static
+# Copy built frontend from Stage 1 to static/dist directory
+RUN mkdir -p static/dist
+COPY --from=frontend-builder /app/frontend/dist ./static/dist
 
 # Expose port (Cloud Run uses PORT env var, but 8080 is a good default)
 EXPOSE 8080
